@@ -25,19 +25,30 @@ SECRET_KEY = '-0&@_bnj1(t)m(-o$!m-$7vr-jozhpmb3b%%jo560h)djdnfs*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APP = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+)
+
+THRID_PARTY_APP = (
+    'rest_framework',
+    'corsheaders'
+)
+
+LOCAL_APP = (
+    'app.inventario',
+)
+
+INSTALLED_APPS =  DJANGO_APP + THRID_PARTY_APP + LOCAL_APP
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,7 +80,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sarcapi.wsgi.application'
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 

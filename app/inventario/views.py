@@ -15,6 +15,6 @@ class AutoViewSet(viewsets.ModelViewSet):
     serializer_class = AutoSerializer
 
 
-# class EquipamientoViewSet(viewsets.ModelViewSet):
-#     queryset = Equipamiento.objects.all()
-#     serializer_class = EquipamientoSerializer
+class EquipamientoViewSet(viewsets.ModelViewSet):
+    queryset = Equipamiento.objects.all()
+    serializer_class = EquipamientoSerializer

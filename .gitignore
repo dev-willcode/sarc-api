@@ -6,3 +6,5 @@
 *.pyc
 sarcapi/__pycache__
 app/*/migrations
+*.pyc
+sarcapi/__pycache__

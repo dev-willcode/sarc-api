@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 router.register(r'servicio', ServicioViewSet)
 router.register(r'marca', MarcaViewSet)
 router.register(r'auto', AutoViewSet)
-# router.register('equipamiento', EquipamientoSerializer, basename='equipamiento')
+router.register('equipamiento', EquipamientoViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

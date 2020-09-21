@@ -20,10 +20,10 @@ class Auto(models.Model):
     modelo = models.TextField()
     precio = models.DecimalField(max_digits=19, decimal_places=2)
 
-# class Equipamiento(models.Model):
-#     auto = models.ForeignKey(Auto, on_delete=models.CASCADE, null=False, blank=False)
-#     nombre = models.TextField()
-#     precio = models.DecimalField(max_digits=19, decimal_places=2)
-#     deSerie = models.BooleanField()
+class Equipamiento(models.Model):
+    auto = models.ForeignKey(Auto, on_delete=models.CASCADE, null=True, blank=True)
+    nombre = models.TextField()
+    precio = models.DecimalField(max_digits=19, decimal_places=2)
+    deSerie = models.BooleanField()
 
     

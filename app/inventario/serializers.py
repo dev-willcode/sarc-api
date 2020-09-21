@@ -12,12 +12,13 @@ class MarcaSerializer(serializers.ModelSerializer):
         model = Marca
         fields = "__all__"
 
+class EquipamientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipamiento
+        fields = "__all__"
+
 class AutoSerializer(serializers.ModelSerializer):
+    equipamiento = EquipamientoSerializer(many=True)
     class Meta:
         model = Auto
         fields = "__all__"
-
-# class EquipamientoSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Equipamiento
-#         fields = ['nombre', 'precio']

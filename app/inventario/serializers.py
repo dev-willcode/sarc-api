@@ -2,6 +2,26 @@ from rest_framework import serializers
 from .models import *
 
 
+class UsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = "__all__"
+
+class PersonaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Persona
+        fields = "__all__"
+
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cliente
+        fields = "__all__"                
+
+class VendedorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendedor
+        fields = "__all__"        
+
 class ServicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
@@ -17,14 +37,18 @@ class EquipamientoSerializer(serializers.ModelSerializer):
         model = Equipamiento
         fields = "__all__"
 
+class ModeloAutoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModeloAuto
+        fields = "__all__"
+
+
 class AutoSerializer(serializers.ModelSerializer):
-    equipamiento = serializers.SerializerMethodField('getequipamiento')
-    marca = MarcaSerializer(read_only=True)
     class Meta:
         model = Auto
         fields = "__all__"
-    
-    def getequipamiento(self, obj):
-        queryset = Equipamiento.objects.filter(auto=obj.id)
-        serializer = EquipamientoSerializer(queryset, many=True)
-        return serializer.data
+
+class FacturaVentaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FacturaVenta
+        fields = "__all__"

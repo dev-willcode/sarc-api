@@ -7,3 +7,4 @@
 sarcapi/__pycache__
 *.pyc
 sarcapi/__pycache__
+app/*/migrations

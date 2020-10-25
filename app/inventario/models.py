@@ -69,7 +69,8 @@ class Auto(models.Model):
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
-
+    imagen = models.ImageField(upload_to='autos',null=True, blank=True)
+    
     def __str__(self):
         return self.bastidor
 

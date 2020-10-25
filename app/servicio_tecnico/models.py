@@ -1,5 +1,6 @@
 from django.db import models
-from ..inventario.models import *
+from app.inventario.models import Cliente, Persona, Servicio, Equipamiento
+
 
 class Vehiculo(models.Model):
     cliente = models.ForeignKey(

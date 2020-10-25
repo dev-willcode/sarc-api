@@ -1,10 +1,10 @@
 /.env
 /.vscode
-/sarcapi/__pycache__/
 *.py[cod]
 .DS_Store
 *.pyc
-sarcapi/__pycache__
+/sarcapi/__pycache__
+sarcapi/__pycache__/*
 *.pyc
-sarcapi/__pycache__
 app/*/migrations
+app/*/__pycache__

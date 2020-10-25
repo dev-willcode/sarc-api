@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from app.inventario.views import *
+from app.servicio_tecnico.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,8 +19,14 @@ router.register(r'modelo_auto', ModeloAutoViewSet)
 router.register(r'auto', AutoViewSet)
 router.register(r'factura_venta', FacturaVentaViewSet)
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
+# servicio tecnico
+router.register(r'vehiculo', VehiculoViewSet)
+router.register(r'mecanico', MecanicoViewSet)
+router.register(r'revision_tecnica', RevisionTecnicaViewSet)
+router.register(r'revision_tecnica_detalle', RevisionTecnicaDetalleViewSet)
+router.register(r'factura_servicio', FacturaVentaViewSet)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),

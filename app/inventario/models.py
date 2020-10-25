@@ -1,15 +1,14 @@
 from django.db import models
 
-
 class Usuario(models.Model):
     correo = models.CharField(max_length=255)
     contrasena = models.CharField(max_length=255)
 
 
 class Persona(models.Model):
-    dni = models.CharField(max_length=13, blank=True, null=True)
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    domicilio = models.CharField(max_length=50, blank=True, null=True)
+    dni = models.CharField(max_length=13, blank=False, null=False)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    domicilio = models.CharField(max_length=50, blank=False, null=False)
     usuario = models.ForeignKey(
         Usuario, on_delete=models.PROTECT, null=False, blank=False)
 
@@ -29,23 +28,23 @@ class Vendedor(models.Model):
 
 class Servicio(models.Model):
     dni = models.CharField(max_length=13,)
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    domicilio = models.CharField(max_length=50, blank=True, null=True)
-    tipo = models.CharField(max_length=50, blank=True, null=True)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    domicilio = models.CharField(max_length=50, blank=False, null=False)
+    tipo = models.CharField(max_length=50, blank=False, null=False)
 
     def __str__(self):
         return self.nombre
 
 
 class Marca(models.Model):
-    descripcion = models.CharField(max_length=50, blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=False, null=False)
 
     def __str__(self):
         return self.descripcion
 
 
 class Equipamiento(models.Model):
-    nombre = models.CharField(max_length=50, blank=True, null=True)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -55,7 +54,7 @@ class Equipamiento(models.Model):
 class ModeloAuto(models.Model):
     marca = models.ForeignKey(
         Marca, on_delete=models.PROTECT, null=False, blank=False)
-    nombre_modelo = models.CharField(max_length=50, blank=True, null=True)
+    nombre_modelo = models.CharField(max_length=50, blank=False, null=False)
     potencia = models.DecimalField(max_digits=10, decimal_places=2)
     cilindraje = models.IntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
@@ -65,7 +64,7 @@ class ModeloAuto(models.Model):
 
 
 class Auto(models.Model):
-    bastidor = models.CharField(unique=True, max_length=17)
+    bastidor = models.CharField(unique=False, max_length=17)
     modelo_auto = models.ForeignKey(
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(
@@ -85,8 +84,8 @@ class FacturaVenta(models.Model):
         Cliente, on_delete=models.PROTECT, null=False, blank=False)
     auto = models.ForeignKey(
         Auto, on_delete=models.PROTECT, null=False, blank=False)
-    forma_pago = models.CharField(max_length=50, blank=True, null=True)
-    matricula = models.CharField(max_length=8, blank=True, null=True)
+    forma_pago = models.CharField(max_length=50, blank=False, null=False)
+    matricula = models.CharField(max_length=8, blank=False, null=False)
 
     def __str__(self):
         return self.numero_factura

@@ -48,6 +48,7 @@ THRID_PARTY_APP = (
 
 LOCAL_APP = (
     'app.inventario',
+    'app.servicio_tecnico',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True

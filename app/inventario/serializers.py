@@ -7,35 +7,36 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = "__all__"
 
-class PersonaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Persona
-        fields = "__all__"
 
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = "__all__"                
+        fields = "__all__"
+
 
 class VendedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendedor
-        fields = "__all__"        
+        fields = "__all__"
+
 
 class ServicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
         fields = "__all__"
 
+
 class MarcaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Marca
         fields = "__all__"
 
+
 class EquipamientoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipamiento
         fields = "__all__"
+
 
 class ModeloAutoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,6 +48,7 @@ class AutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auto
         fields = "__all__"
+
 
 class FacturaVentaSerializer(serializers.ModelSerializer):
     class Meta:

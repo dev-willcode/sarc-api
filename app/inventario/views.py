@@ -1,8 +1,26 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, views
 from .models import *
 from .serializers import *
 import rest_framework_filters.backends as filter_advanced
 from ..shared.generate_filters import crear_filtros, listado_filtrado
+
+from app.inventario.models import Usuario
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import action
+
+class loginViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        correo = request.data.get("correo", None)
+        contrasena = request.data.get("contrasena", None)
+
+        try:
+            user = Usuario.objects.get(correo=correo, contrasena=contrasena)
+            serializer = UsuarioSerializer(user)
+            return Response(serializer.data)
+        except Usuario.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
@@ -12,18 +30,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
                        filter_advanced.ComplexFilterBackend)
     search_fields = []
     filter_fields = crear_filtros(["correo", "contrasena"])
-
-    def list(self, request, *args, **kwargs):
-        return listado_filtrado(self)
-
-
-class PersonaViewSet(viewsets.ModelViewSet):
-    queryset = Persona.objects.all()
-    serializer_class = PersonaSerializer
-    filter_backends = (filters.OrderingFilter, filters.SearchFilter, filter_advanced.RestFrameworkFilterBackend,
-                       filter_advanced.ComplexFilterBackend)
-    search_fields = []
-    filter_fields = crear_filtros(["dni", "nombre"])
 
     def list(self, request, *args, **kwargs):
         return listado_filtrado(self)

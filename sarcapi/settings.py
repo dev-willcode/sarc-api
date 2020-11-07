@@ -88,8 +88,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sarcapi.wsgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 1
 }
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

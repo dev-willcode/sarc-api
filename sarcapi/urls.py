@@ -7,9 +7,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
+# Login
+router.register(r'login', loginViewSet, basename=r'login')
+
 # Inventario
 router.register(r'usuario', UsuarioViewSet)
-router.register(r'persona', PersonaViewSet)
 router.register(r'cliente', ClienteViewSet)
 router.register(r'vendedor', VendedorViewSet)
 router.register(r'servicio', ServicioViewSet)

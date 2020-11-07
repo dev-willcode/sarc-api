@@ -1,5 +1,5 @@
 from django.db import models
-from app.inventario.models import Cliente, Persona, Servicio, Equipamiento
+from app.inventario.models import Cliente, Usuario, Servicio, Equipamiento
 
 
 class Vehiculo(models.Model):
@@ -13,8 +13,11 @@ class Vehiculo(models.Model):
 
 
 class Mecanico(models.Model):
-    persona = models.ForeignKey(
-        Persona, on_delete=models.PROTECT, null=False, blank=False)
+    dni = models.CharField(max_length=13, blank=False, null=False)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    domicilio = models.CharField(max_length=50, blank=False, null=False)
+    usuario = models.ForeignKey(
+        Usuario, on_delete=models.PROTECT, null=False, blank=False)
     taller = models.ForeignKey(
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
 

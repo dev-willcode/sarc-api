@@ -1,29 +1,23 @@
 from django.db import models
 
 class Usuario(models.Model):
-    correo = models.CharField(max_length=255)
+    correo = models.CharField(unique=True, max_length=255)
     contrasena = models.CharField(max_length=255)
 
-
-class Persona(models.Model):
+class Cliente(models.Model):
     dni = models.CharField(max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     usuario = models.ForeignKey(
         Usuario, on_delete=models.PROTECT, null=False, blank=False)
 
-    def __str__(self):
-        return self.nombre
-
-
-class Cliente(models.Model):
-    persona = models.ForeignKey(
-        Persona, on_delete=models.PROTECT, null=False, blank=False)
-
 
 class Vendedor(models.Model):
-    persona = models.ForeignKey(
-        Persona, on_delete=models.PROTECT, null=False, blank=False)
+    dni = models.CharField(max_length=13, blank=False, null=False)
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    domicilio = models.CharField(max_length=50, blank=False, null=False)
+    usuario = models.ForeignKey(
+        Usuario, on_delete=models.PROTECT, null=False, blank=False)
 
 
 class Servicio(models.Model):
@@ -64,7 +58,7 @@ class ModeloAuto(models.Model):
 
 
 class Auto(models.Model):
-    bastidor = models.CharField(unique=False, max_length=17)
+    bastidor = models.CharField(unique=True, max_length=17)
     modelo_auto = models.ForeignKey(
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(

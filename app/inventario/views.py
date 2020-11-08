@@ -7,13 +7,24 @@ from rest_framework import status
 
 
 class loginViewSet(viewsets.ViewSet):
+
     def create(self, request, *args, **kwargs):
-        usuario = request.data.get("usuario", None)
+        correo = request.data.get("correo", None)
         contrasena = request.data.get("contrasena", None)
 
         try:
-            user = Usuario.objects.get(usuario=usuario, contrasena=contrasena)
-            serializer = UsuarioSerializer(user)
+            user = Usuario.objects.get(correo=correo, contrasena=contrasena)
+            serializer = None
+            entidad = None
+            if user.tipo == 'Cliente':
+                entidad = Cliente.objects.get(usuario=user.id)
+                serializer = ClienteSerializer(entidad)
+            if user.tipo == 'Vendedor':
+                entidad = Cliente.objects.get(usuario=user.id)
+                serializer = ClienteSerializer(entidad)
+            if user.tipo == 'Mecanico':
+                entidad = Cliente.objects.get(usuario=user.id)
+                serializer = ClienteSerializer(entidad)
             return Response(serializer.data)
         except Usuario.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)

@@ -3,6 +3,7 @@ from django.db import models
 class Usuario(models.Model):
     correo = models.CharField(unique=True, blank=False, null=False, max_length=255)
     contrasena = models.CharField(blank=False, null=False, max_length=255)
+    tipo = models.CharField(default='Cliente', blank=False, null=False, max_length=255)
 
 class Cliente(models.Model):
     dni = models.CharField(max_length=13, blank=False, null=False)
@@ -61,6 +62,7 @@ class ModeloAuto(models.Model):
 
 class Auto(models.Model):
     bastidor = models.CharField(unique=True, max_length=17)
+    estado = models.BooleanField(default=True)
     modelo_auto = models.ForeignKey(
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(

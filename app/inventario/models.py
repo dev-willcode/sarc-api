@@ -1,23 +1,25 @@
 from django.db import models
 
 class Usuario(models.Model):
-    correo = models.CharField(unique=True, max_length=255)
-    contrasena = models.CharField(max_length=255)
+    correo = models.CharField(unique=True, blank=False, null=False, max_length=255)
+    contrasena = models.CharField(blank=False, null=False, max_length=255)
 
 class Cliente(models.Model):
     dni = models.CharField(max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
+    correo = models.CharField(blank=False, null=False, max_length=255)
     usuario = models.ForeignKey(
-        Usuario, on_delete=models.PROTECT, null=False, blank=False)
+        Usuario, on_delete=models.PROTECT, null=True, blank=True)
 
 
 class Vendedor(models.Model):
     dni = models.CharField(max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
+    correo = models.CharField(blank=False, null=False, max_length=255)
     usuario = models.ForeignKey(
-        Usuario, on_delete=models.PROTECT, null=False, blank=False)
+        Usuario, on_delete=models.PROTECT, null=True, blank=True)
 
 
 class Servicio(models.Model):

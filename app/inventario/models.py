@@ -74,7 +74,7 @@ class Auto(models.Model):
 
 
 class FacturaVenta(models.Model):
-    numero_factura = models.CharField(max_length=17, blank=False, null=False)
+    numero_factura = models.CharField(max_length=17, blank=True, null=True)
     fecha_emision = models.DateField(blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     vendedor = models.ForeignKey(
@@ -84,7 +84,7 @@ class FacturaVenta(models.Model):
     auto = models.ForeignKey(
         Auto, on_delete=models.PROTECT, null=False, blank=False)
     forma_pago = models.CharField(max_length=50, blank=False, null=False)
-    matricula = models.CharField(max_length=8, blank=False, null=False)
+
 
     def __str__(self):
         return self.numero_factura

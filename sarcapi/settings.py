@@ -88,6 +88,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sarcapi.wsgi.application'
 
 REST_FRAMEWORK = {
+      'EXCEPTION_HANDLER': 'app.shared.exceptions.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }

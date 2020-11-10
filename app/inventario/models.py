@@ -1,9 +1,13 @@
 from django.db import models
 
+
 class Usuario(models.Model):
-    correo = models.CharField(unique=True, blank=False, null=False, max_length=255)
+    correo = models.CharField(unique=True, blank=False,
+                              null=False, max_length=255)
     contrasena = models.CharField(blank=False, null=False, max_length=255)
-    tipo = models.CharField(default='Cliente', blank=False, null=False, max_length=255)
+    tipo = models.CharField(
+        default='Cliente', blank=False, null=False, max_length=255)
+
 
 class Cliente(models.Model):
     dni = models.CharField(max_length=13, blank=False, null=False)
@@ -11,7 +15,7 @@ class Cliente(models.Model):
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
     usuario = models.ForeignKey(
-        Usuario, on_delete=models.PROTECT, null=True, blank=True)
+        Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Vendedor(models.Model):
@@ -20,7 +24,7 @@ class Vendedor(models.Model):
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
     usuario = models.ForeignKey(
-        Usuario, on_delete=models.PROTECT, null=True, blank=True)
+        Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Servicio(models.Model):
@@ -55,6 +59,7 @@ class ModeloAuto(models.Model):
     potencia = models.DecimalField(max_digits=10, decimal_places=2)
     cilindraje = models.IntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    equipamientos = models.ManyToManyField(Equipamiento)
 
     def __str__(self):
         return self.nombre_modelo
@@ -67,8 +72,8 @@ class Auto(models.Model):
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
-    imagen = models.ImageField(upload_to='autos',null=True, blank=True)
-    
+    imagen = models.ImageField(upload_to='autos', null=True, blank=True)
+
     def __str__(self):
         return self.bastidor
 
@@ -84,7 +89,6 @@ class FacturaVenta(models.Model):
     auto = models.ForeignKey(
         Auto, on_delete=models.PROTECT, null=False, blank=False)
     forma_pago = models.CharField(max_length=50, blank=False, null=False)
-
 
     def __str__(self):
         return self.numero_factura

@@ -45,6 +45,7 @@ class ModeloAutoSerializer(serializers.ModelSerializer):
 
 
 class AutoSerializer(serializers.ModelSerializer):
+    modelo = ModeloAutoSerializer(read_only=True)
     class Meta:
         model = Auto
         fields = "__all__"

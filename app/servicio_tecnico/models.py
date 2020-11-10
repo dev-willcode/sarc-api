@@ -18,7 +18,7 @@ class Mecanico(models.Model):
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
     usuario = models.ForeignKey(
-        Usuario, on_delete=models.PROTECT, null=True, blank=True)
+        Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     taller = models.ForeignKey(
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
 

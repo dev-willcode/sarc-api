@@ -39,17 +39,23 @@ class EquipamientoSerializer(serializers.ModelSerializer):
 
 
 class ModeloAutoSerializer(serializers.ModelSerializer):
+    equipamientos_auto = serializers.SerializerMethodField('get_equipamientos_auto', read_only=True)
     class Meta:
         model = ModeloAuto
         fields = "__all__"
-
+    def get_equipamientos_auto(self, obj):
+        modelo = ModeloAuto.objects.get(pk=obj.pk)
+        serializer = ModeloAutoSerializerList(modelo)
+        return serializer.data['equipamientos']
 
 class ModeloAutoSerializerList(serializers.ModelSerializer):
     equipamientos = EquipamientoSerializer(many=True, read_only=True)
-
+    
     class Meta:
         model = ModeloAuto
         fields = "__all__"
+
+    
 
 
 class AutoSerializer(serializers.ModelSerializer):
@@ -77,7 +83,7 @@ class AutoSerializer(serializers.ModelSerializer):
 class FacturaVentaSerializer(serializers.ModelSerializer):
     nombre_cliente = serializers.SerializerMethodField('get_nombre_cliente', read_only=True)
     modelo = serializers.SerializerMethodField('get_modelo', read_only=True)
-    
+
     class Meta:
         model = FacturaVenta
         fields = "__all__"

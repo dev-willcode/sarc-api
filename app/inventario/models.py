@@ -79,7 +79,6 @@ class Auto(models.Model):
 
 
 class FacturaVenta(models.Model):
-    numero_factura = models.CharField(max_length=17, blank=True, null=True)
     fecha_emision = models.DateField(blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     vendedor = models.ForeignKey(

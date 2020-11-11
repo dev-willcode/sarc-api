@@ -26,7 +26,7 @@ router.register(r'vehiculo', VehiculoViewSet)
 router.register(r'mecanico', MecanicoViewSet)
 router.register(r'revision_tecnica', RevisionTecnicaViewSet)
 router.register(r'revision_tecnica_detalle', RevisionTecnicaDetalleViewSet)
-router.register(r'factura_servicio', FacturaVentaViewSet)
+router.register(r'factura_servicio', FacturaServicioViewSet)
 
 
 urlpatterns = [

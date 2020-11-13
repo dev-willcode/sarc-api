@@ -89,5 +89,10 @@ class FacturaVenta(models.Model):
         Auto, on_delete=models.PROTECT, null=False, blank=False)
     forma_pago = models.CharField(max_length=50, blank=False, null=False)
 
-    def __str__(self):
-        return self.numero_factura
+
+class FacturaVentaDetalle(models.Model):
+    factura = models.ForeignKey(FacturaVenta, related_name='detalle_factura',
+                                on_delete=models.CASCADE, blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=False, null=False)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    es_serie = models.BooleanField(default=True)

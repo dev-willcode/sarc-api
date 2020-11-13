@@ -10,4 +10,3 @@ def crear_filtros(fields):
         return field_filter
     else:
         return ""
-

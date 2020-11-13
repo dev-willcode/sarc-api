@@ -53,10 +53,10 @@ LOCAL_APP = (
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-INSTALLED_APPS =  DJANGO_APP + THRID_PARTY_APP + LOCAL_APP
+INSTALLED_APPS = DJANGO_APP + THRID_PARTY_APP + LOCAL_APP
 
 MIDDLEWARE = [
-     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -88,7 +88,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sarcapi.wsgi.application'
 
 REST_FRAMEWORK = {
-      'EXCEPTION_HANDLER': 'app.shared.exceptions.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'app.shared.exceptions.custom_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
@@ -99,7 +99,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sarcdb',
-        'USER' : 'postgres',
+        'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': ''
@@ -147,4 +147,4 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

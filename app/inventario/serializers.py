@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -39,59 +40,65 @@ class EquipamientoSerializer(serializers.ModelSerializer):
 
 
 class ModeloAutoSerializer(serializers.ModelSerializer):
-    equipamientos_auto = serializers.SerializerMethodField('get_equipamientos_auto', read_only=True)
+    equipamientos_auto = serializers.SerializerMethodField(
+        'get_equipamientos_auto', read_only=True)
+
     class Meta:
         model = ModeloAuto
         fields = "__all__"
+
     def get_equipamientos_auto(self, obj):
         modelo = ModeloAuto.objects.get(pk=obj.pk)
         serializer = ModeloAutoSerializerList(modelo)
         return serializer.data['equipamientos']
 
+
 class ModeloAutoSerializerList(serializers.ModelSerializer):
     equipamientos = EquipamientoSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = ModeloAuto
         fields = "__all__"
 
-    
-
 
 class AutoSerializer(serializers.ModelSerializer):
-    modelo = serializers.SerializerMethodField('get_modelo', read_only=True)
-    servicio = serializers.SerializerMethodField('get_servicio', read_only=True)
-    equipamientos_auto = serializers.SerializerMethodField('get_equipamientos_auto', read_only=True)
+    nombre_modelo = serializers.CharField(
+        source='modelo_auto.nombre_modelo', read_only=True)
+    precio_modelo = serializers.CharField(
+        source='modelo_auto.precio', read_only=True)
+    servicio = serializers.CharField(
+        source='concesionario.nombre', read_only=True)
+    equipamientos_auto = serializers.SerializerMethodField(
+        'get_equipamientos_auto', read_only=True)
+
     class Meta:
         model = Auto
         fields = "__all__"
 
-    def get_modelo(self, obj):
-        modelo = ModeloAuto.objects.get(pk=obj.modelo_auto.pk)
-        return modelo.nombre_modelo
-    
-    def get_servicio(self, obj):
-        servicio = Servicio.objects.get(pk=obj.concesionario.pk)
-        return servicio.nombre
-    
     def get_equipamientos_auto(self, obj):
         modelo = ModeloAuto.objects.get(pk=obj.modelo_auto.pk)
         serializer = ModeloAutoSerializerList(modelo)
         return serializer.data['equipamientos']
 
 
-class FacturaVentaSerializer(serializers.ModelSerializer):
-    nombre_cliente = serializers.SerializerMethodField('get_nombre_cliente', read_only=True)
-    modelo = serializers.SerializerMethodField('get_modelo', read_only=True)
+class FacturaVentaDetalleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FacturaVentaDetalle
+        fields = "__all__"
+
+
+class FacturaVentaSerializer(WritableNestedModelSerializer):
+    nombre_cliente = serializers.CharField(
+        source="cliente.nombre", read_only=True)
+    nombre_vendedor = serializers.CharField(
+        source="vendedor.nombre", read_only=True)
+    nombre_modelo = serializers.CharField(
+        source="auto.modelo_auto.nombre_modelo", read_only=True)
+    auto_bastidor = serializers.CharField(
+        source="auto.bastidor", read_only=True)
+    detalle_factura = FacturaVentaDetalleSerializer(many=True)
 
     class Meta:
         model = FacturaVenta
-        fields = "__all__"
-    
-    def get_nombre_cliente(self, obj):
-        cliente = Cliente.objects.get(pk=obj.cliente.pk)
-        return cliente.nombre
-    
-    def get_modelo(self, obj):
-        modelo = ModeloAuto.objects.get(pk=obj.auto.modelo_auto.pk)
-        return modelo.nombre_modelo
+        fields = '__all__'

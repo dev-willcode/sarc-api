@@ -1,6 +1,10 @@
 from rest_framework import viewsets, filters, views
 from .models import *
 from .serializers import *
+
+from ..servicio_tecnico.models import Mecanico
+from ..servicio_tecnico.serializers import MecanicoSerializer
+
 from rest_framework.response import Response
 from rest_framework import status
 import rest_framework_filters.backends as filter_advanced
@@ -21,15 +25,44 @@ class loginViewSet(viewsets.ViewSet):
             if user.tipo == 'Cliente':
                 entidad = Cliente.objects.get(usuario=user.id)
                 serializer = ClienteSerializer(entidad)
-            if user.tipo == 'Vendedor':
-                entidad = Cliente.objects.get(usuario=user.id)
-                serializer = ClienteSerializer(entidad)
-            if user.tipo == 'Mecanico':
-                entidad = Cliente.objects.get(usuario=user.id)
-                serializer = ClienteSerializer(entidad)
-            return Response({'persona': serializer.data, 'usuario': usuario.data})
+            else:
+                if user.tipo == 'Vendedor':
+                    entidad = Vendedor.objects.get(usuario=user.id)
+                    serializer = VendedorSerializer(entidad)
+                else:
+                    if user.tipo == 'Mecanico':
+                        entidad = Mecanico.objects.get(usuario=user.id)
+                        serializer = MecanicoSerializer(entidad)
+                    else:
+                        if user.tipo == 'Admin':
+                            return Response({'nombre': 'admin', 'correo': correo, 'tipo': 'Admin'}, status=status.HTTP_200_OK)
+            return Response({'nombre': serializer.data['nombre'], 'correo': serializer.data['correo'], 'tipo': usuario.data['tipo']
+                             }, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class registerViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        nombre = request.data.get("nombre")
+        dni = request.data.get("dni")
+        domicilio = request.data.get("domicilio")
+        correo = request.data.get("correo")
+        dato_usuario = request.data.get("usuario")
+
+        cliente = Cliente(nombre=nombre, dni=dni,
+                          domicilio=domicilio, correo=correo)
+        cliente.save()
+        usuario = Usuario.objects.get(correo=correo)
+        usuario.contrasena = dato_usuario['contrasena']
+        usuario.save()
+
+        return Response(({
+            'nombre': nombre,
+            'correo': correo,
+            'tipo': 'Cliente'
+        }), status=status.HTTP_201_CREATED)
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):

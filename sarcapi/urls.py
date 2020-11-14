@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 router = routers.DefaultRouter()
 # Login
 router.register(r'login', loginViewSet, basename=r'login')
+router.register(r'register', registerViewSet, basename=r'register')
 
 # Inventario
 router.register(r'usuario', UsuarioViewSet)
@@ -24,6 +25,8 @@ router.register(r'factura_venta', FacturaVentaViewSet)
 # servicio tecnico
 router.register(r'vehiculo', VehiculoViewSet)
 router.register(r'mecanico', MecanicoViewSet)
+router.register(r'citas', CitasViewSet)
+router.register(r'repuestos', RepuestosViewSet)
 router.register(r'revision_tecnica', RevisionTecnicaViewSet)
 router.register(r'revision_tecnica_detalle', RevisionTecnicaDetalleViewSet)
 router.register(r'factura_servicio', FacturaServicioViewSet)

@@ -23,31 +23,53 @@ class Mecanico(models.Model):
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
 
 
+class Citas(models.Model):
+    cliente = models.ForeignKey(
+        Cliente, on_delete=models.PROTECT, null=False, blank=False)
+    mecanico = models.ForeignKey(
+        Mecanico, on_delete=models.PROTECT, null=False, blank=False)
+    fecha = models.DateField(blank=False, null=False)
+
+
+class Repuestos(models.Model):
+    nombre = models.CharField(max_length=50, blank=False, null=False)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.nombre
+
+
 class RevisionTecnica(models.Model):
     vehiculo = models.ForeignKey(
         Vehiculo, on_delete=models.PROTECT, null=False, blank=False)
     mecanico = models.ForeignKey(
         Mecanico, on_delete=models.PROTECT, null=False, blank=False)
-    kilometraje_actual = models.DecimalField(max_digits=10, decimal_places=2)
+    cliente = models.ForeignKey(
+        Cliente, on_delete=models.PROTECT, null=False, blank=False)
     fecha_revision = models.DateField(blank=False, null=False)
     fecha_proxima_revision = models.DateField(blank=False, null=False)
+    kilometraje_actual = models.DecimalField(max_digits=10, decimal_places=2)
+    costo_revision = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class RevisionTecnicaDetalle(models.Model):
     revision_tecnica = models.ForeignKey(
         RevisionTecnica, on_delete=models.PROTECT, null=False, blank=False)
-    repuesto = models.ForeignKey(
-        Equipamiento, on_delete=models.PROTECT, null=False, blank=False)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.CharField(max_length=50, blank=False, null=False)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class FacturaServicio(models.Model):
-    revision_tecnica = models.ForeignKey(
-        'RevisionTecnica', on_delete=models.PROTECT, null=False, blank=False)
-    numero_factura = models.CharField(max_length=17, blank=False, null=False)
     fecha_emision = models.DateField(blank=False, null=False)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
+    cliente = models.ForeignKey(
+        Cliente, on_delete=models.PROTECT, null=False, blank=False)
 
     def __str__(self):
         return self.numero_factura
+
+
+class FacturaServicioDetalle(models.Model):
+    factura = models.ForeignKey(FacturaServicio, related_name='detalle_servicio',
+                                on_delete=models.CASCADE, blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=False, null=False)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)

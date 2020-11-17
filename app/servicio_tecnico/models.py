@@ -17,6 +17,7 @@ class Mecanico(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
+    citas_pendientes = models.IntegerField(default=0)
     usuario = models.ForeignKey(
         Usuario, on_delete=models.SET_NULL, null=True, blank=True)
     taller = models.ForeignKey(
@@ -27,13 +28,16 @@ class Citas(models.Model):
     cliente = models.ForeignKey(
         Cliente, on_delete=models.PROTECT, null=False, blank=False)
     mecanico = models.ForeignKey(
-        Mecanico, on_delete=models.PROTECT, null=False, blank=False)
+        Mecanico, on_delete=models.PROTECT, null=True, blank=True)
     fecha = models.DateField(blank=False, null=False)
+    hora = models.CharField(max_length=50, null=False, blank=False)
+    estado = models.BooleanField(default=True)
 
 
 class Repuestos(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.IntegerField()
 
     def __str__(self):
         return self.nombre
@@ -65,7 +69,7 @@ class FacturaServicio(models.Model):
         Cliente, on_delete=models.PROTECT, null=False, blank=False)
 
     def __str__(self):
-        return self.numero_factura
+        return self.id
 
 
 class FacturaServicioDetalle(models.Model):
@@ -73,3 +77,4 @@ class FacturaServicioDetalle(models.Model):
                                 on_delete=models.CASCADE, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.IntegerField()

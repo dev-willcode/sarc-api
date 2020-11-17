@@ -59,7 +59,8 @@ class ModeloAuto(models.Model):
     potencia = models.DecimalField(max_digits=10, decimal_places=2)
     cilindraje = models.IntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    equipamientos = models.ManyToManyField(Equipamiento)
+    descuento = models.DecimalField(max_digits=10, decimal_places=2)
+    equipamientos = models.ManyToManyField(Equipamiento, blank=True)
 
     def __str__(self):
         return self.nombre_modelo
@@ -72,7 +73,6 @@ class Auto(models.Model):
         ModeloAuto, on_delete=models.PROTECT, null=False, blank=False)
     concesionario = models.ForeignKey(
         Servicio, on_delete=models.PROTECT, null=False, blank=False)
-    imagen = models.ImageField(upload_to='autos', null=True, blank=True)
 
     def __str__(self):
         return self.bastidor
@@ -81,6 +81,7 @@ class Auto(models.Model):
 class FacturaVenta(models.Model):
     fecha_emision = models.DateField(blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    descuento = models.DecimalField(max_digits=10, decimal_places=2)
     vendedor = models.ForeignKey(
         Vendedor, on_delete=models.PROTECT, null=False, blank=False)
     cliente = models.ForeignKey(

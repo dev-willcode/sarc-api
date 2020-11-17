@@ -36,8 +36,9 @@ class loginViewSet(viewsets.ViewSet):
                     else:
                         if user.tipo == 'Admin':
                             return Response({'nombre': 'admin', 'correo': correo, 'tipo': 'Admin'}, status=status.HTTP_200_OK)
-            return Response({'nombre': serializer.data['nombre'], 'correo': serializer.data['correo'], 'tipo': usuario.data['tipo']
-                             }, status=status.HTTP_200_OK)
+            return Response({'id': serializer.data['id'], 'dni': serializer.data['dni'], 'nombre': serializer.data['nombre'],
+                             'correo': serializer.data['correo'], 'domicilio': serializer.data['domicilio'], 'tipo': usuario.data['tipo'],
+                             'usuario': usuario.data['id']}, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -63,6 +64,24 @@ class registerViewSet(viewsets.ViewSet):
             'correo': correo,
             'tipo': 'Cliente'
         }), status=status.HTTP_201_CREATED)
+
+
+class actualizarContrasenaViewSet(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        id = request.data.get("id")
+        contrasena_actual = request.data.get("contrasena_actual")
+        nueva_contrasena = request.data.get("nueva_contrasena")
+        usuario = Usuario.objects.get(pk=id)
+
+        if(usuario.contrasena == contrasena_actual):
+            serializer = UsuarioSerializer(
+                usuario, data={'contrasena': nueva_contrasena}, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response({'error': ['La constraseña actual es incorrecta']}, status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):

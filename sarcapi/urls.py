@@ -10,6 +10,7 @@ router = routers.DefaultRouter()
 # Login
 router.register(r'login', loginViewSet, basename=r'login')
 router.register(r'register', registerViewSet, basename=r'register')
+router.register(r'actualizar_contrasena', actualizarContrasenaViewSet, basename=r'actualizar_contrasena')
 
 # Inventario
 router.register(r'usuario', UsuarioViewSet)

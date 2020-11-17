@@ -66,6 +66,8 @@ class AutoSerializer(serializers.ModelSerializer):
         source='modelo_auto.nombre_modelo', read_only=True)
     precio_modelo = serializers.CharField(
         source='modelo_auto.precio', read_only=True)
+    descuento_modelo = serializers.CharField(
+        source='modelo_auto.descuento', read_only=True)
     servicio = serializers.CharField(
         source='concesionario.nombre', read_only=True)
     equipamientos_auto = serializers.SerializerMethodField(

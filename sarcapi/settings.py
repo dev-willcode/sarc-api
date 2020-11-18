@@ -94,15 +94,26 @@ REST_FRAMEWORK = {
 }
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+# Local development
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'sarcdb',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': ''
+#     }
+# }
+# Production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sarcdb',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': ''
+        'USER': 'uygxvuvymtepyz',
+        'PASSWORD': '201970119e8d7edc67cec7e2f05c7382a4a36e6fbef6586525ca8fa8b2ec05f4',
+        'HOST': 'ec2-3-220-23-212.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
@@ -143,8 +154,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATIC_ROOT= os.path.join(BASE_DIR, 'live-static','static-root')
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'live-static','media-root')
+

@@ -187,7 +187,7 @@ from weasyprint import HTML
 import tempfile
 
 
-def generate_pdf(request, source, data):
+def generate_pdf(source, data):
     """Generate pdf."""
     # Model data
     # people = Person.objects.all().order_by('last_name')

@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'sarcapi.urls'
@@ -109,7 +110,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sarcdb',
+        'NAME': 'd6l023h5j9ntf4',
         'USER': 'uygxvuvymtepyz',
         'PASSWORD': '201970119e8d7edc67cec7e2f05c7382a4a36e6fbef6586525ca8fa8b2ec05f4',
         'HOST': 'ec2-3-220-23-212.compute-1.amazonaws.com',
@@ -161,9 +162,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-STATIC_ROOT= os.path.join(BASE_DIR, 'live-static','static-root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'live-static', 'static-root')
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'live-static','media-root')
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')

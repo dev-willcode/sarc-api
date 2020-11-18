@@ -37,8 +37,6 @@ router.register(r'factura_servicio', FacturaServicioViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('pdf_view/', ViewPDF.as_view(), name="pdf_view"),
-    path('pdf_download/', DownloadPDF.as_view(), name="pdf_download"),
 ]
 
 if settings.DEBUG:

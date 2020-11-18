@@ -58,6 +58,16 @@ class FacturaServicioDetalleSerializer(serializers.ModelSerializer):
         model = FacturaServicioDetalle
         fields = "__all__"
 
+    def create(self, validated_data):
+        respuesto = validated_data.get('repuesto', None)
+        cantidad = validated_data.get('cantidad')
+        
+        if respuesto is not None:
+            repuesto = Repuestos.objects.get(pk=respuesto.id)
+            repuesto.cantidad -= cantidad
+            repuesto.save()
+        return FacturaServicioDetalle.objects.create(**validated_data)
+
 
 class FacturaServicioSerializer(WritableNestedModelSerializer):
     nombre_cliente = serializers.CharField(

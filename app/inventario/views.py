@@ -36,9 +36,15 @@ class loginViewSet(viewsets.ViewSet):
                     else:
                         if user.tipo == 'Admin':
                             return Response({'nombre': 'admin', 'correo': correo, 'tipo': 'Admin'}, status=status.HTTP_200_OK)
-            return Response({'id': serializer.data['id'], 'dni': serializer.data['dni'], 'nombre': serializer.data['nombre'],
-                             'correo': serializer.data['correo'], 'domicilio': serializer.data['domicilio'], 'tipo': usuario.data['tipo'],
-                             'usuario': usuario.data['id']}, status=status.HTTP_200_OK)
+            return Response(
+                {'id': serializer.data['id'],
+                 'dni': serializer.data['dni'],
+                 'nombre': serializer.data['nombre'],
+                 'correo': serializer.data['correo'],
+                 'domicilio': serializer.data['domicilio'],
+                 'tipo': usuario.data['tipo'],
+                 'usuario': usuario.data['id']},
+                status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -59,11 +65,14 @@ class registerViewSet(viewsets.ViewSet):
         usuario.contrasena = dato_usuario['contrasena']
         usuario.save()
 
-        return Response(({
-            'nombre': nombre,
-            'correo': correo,
-            'tipo': 'Cliente'
-        }), status=status.HTTP_201_CREATED)
+        return Response(
+            {'id': cliente.id,
+             'dni': cliente.dni,
+             'nombre': cliente.nombre,
+             'correo': cliente.correo,
+             'domicilio': cliente.domicilio, 'tipo': usuario.tipo,
+             'usuario': usuario.id
+             }, status=status.HTTP_201_CREATED)
 
 
 class actualizarContrasenaViewSet(viewsets.ViewSet):

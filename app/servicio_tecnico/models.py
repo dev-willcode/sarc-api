@@ -65,6 +65,8 @@ class RevisionTecnicaDetalle(models.Model):
 
 class FacturaServicio(models.Model):
     fecha_emision = models.DateField(blank=False, null=False)
+    revision_tecnica = models.ForeignKey(
+        RevisionTecnica, on_delete=models.PROTECT, null=True, blank=True)
     cliente = models.ForeignKey(
         Cliente, on_delete=models.PROTECT, null=False, blank=False)
 
@@ -75,6 +77,8 @@ class FacturaServicio(models.Model):
 class FacturaServicioDetalle(models.Model):
     factura = models.ForeignKey(FacturaServicio, related_name='detalle_servicio',
                                 on_delete=models.CASCADE, blank=True, null=True)
+    repuesto = models.ForeignKey(
+        Repuestos, on_delete=models.PROTECT, blank=True, null=True)
     descripcion = models.CharField(max_length=50, blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.IntegerField()

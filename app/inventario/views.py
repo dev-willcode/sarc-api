@@ -1,3 +1,4 @@
+from django.views import View
 from rest_framework import viewsets, filters, views
 from .models import *
 from .serializers import *
@@ -156,3 +157,54 @@ class AutoViewSet(viewsets.ModelViewSet):
 class FacturaVentaViewSet(viewsets.ModelViewSet):
     queryset = FacturaVenta.objects.all()
     serializer_class = FacturaVentaSerializer
+
+
+class FacturaVentaReport(viewsets.ViewSet):
+    queryset = FacturaVenta.objects.all()
+    serializer_class = FacturaVentaSerializer
+
+    def list(self, request, *args, **kwargs):
+        data = {
+            "company": "SARC S.A",
+            "address": "123 Street name",
+            "city": "Machala",
+            "state": "El Oro",
+            "zipcode": "0700001",
+
+
+            "phone": "0986137722",
+            "email": "willyco67@gm.co",
+            "website": "sarc.com",
+        }
+        pdf = generate_pdf('app/pdf_template.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+
+# -*- coding: utf-8 -*-
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
+
+
+def generate_pdf(request, source, data):
+    """Generate pdf."""
+    # Model data
+    # people = Person.objects.all().order_by('last_name')
+
+    # Rendered
+    html_string = render_to_string(source, data)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+
+    # Creating http response
+    response = HttpResponse(content_type='application/pdf;')
+    response['Content-Disposition'] = 'inline; filename=list_people.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'r')
+        response.write(output.read())
+
+    return response

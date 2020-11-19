@@ -1,5 +1,7 @@
+from django.db.models import Count, F
 from django.views import View
 from rest_framework import viewsets, filters, views
+from sarcapi.shared.report_utils import generar_reporte
 from .models import *
 from .serializers import *
 
@@ -10,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework import status
 import rest_framework_filters.backends as filter_advanced
 from ..shared.generate_filters import crear_filtros
+
+from ..shared.report_utils import generar_reporte
 
 
 class loginViewSet(viewsets.ViewSet):
@@ -159,52 +163,19 @@ class FacturaVentaViewSet(viewsets.ModelViewSet):
     serializer_class = FacturaVentaSerializer
 
 
-class FacturaVentaReport(viewsets.ViewSet):
-    queryset = FacturaVenta.objects.all()
-    serializer_class = FacturaVentaSerializer
+class ModeloAutoVendidosReport(viewsets.ViewSet):
 
     def list(self, request, *args, **kwargs):
+        numero_resultados = request.data.get('numero_resultados')
+        fecha_inicio = request.data.get('fecha_inicio')
+        fecha_fin = request.data.get('fecha_fin')
+        resultados = FacturaVenta.objects.filter(fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin).annotate(nombre_modelo=F(
+            'auto__modelo_auto__nombre_modelo')).values('nombre_modelo').annotate(cantidad_vendidos=Count('nombre_modelo')).order_by('-cantidad_vendidos')[:numero_resultados]
+
         data = {
-            "company": "SARC S.A",
-            "address": "123 Street name",
-            "city": "Machala",
-            "state": "El Oro",
-            "zipcode": "0700001",
-
-
-            "phone": "0986137722",
-            "email": "willyco67@gm.co",
-            "website": "sarc.com",
+            'numero_resultados' : numero_resultados,
+            'fecha_inicio': fecha_inicio,
+            'fecha_fin': fecha_fin,
+            'resultados': resultados
         }
-        pdf = generate_pdf('app/pdf_template.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-
-
-# -*- coding: utf-8 -*-
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from weasyprint import HTML
-import tempfile
-
-
-def generate_pdf(source, data):
-    """Generate pdf."""
-    # Model data
-    # people = Person.objects.all().order_by('last_name')
-
-    # Rendered
-    html_string = render_to_string(source, data)
-    html = HTML(string=html_string)
-    result = html.write_pdf()
-
-    # Creating http response
-    response = HttpResponse(content_type='application/pdf;')
-    response['Content-Disposition'] = 'inline; filename=list_people.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output = open(output.name, 'r')
-        response.write(output.read())
-
-    return response
+        return generar_reporte('modelo_autos_vendidos', data)

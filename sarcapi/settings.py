@@ -69,12 +69,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sarcapi.urls'
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'sarcapi', 'templates')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
+        'DIRS': [TEMPLATE_DIR, ],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

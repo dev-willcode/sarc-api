@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Reporte de ventas de autos</title>
+  </head>
+
+  <body>
+    <h1>Reporte de ventas de autos</h1>
+    <h2>Top {{ numero_resultados }} modelos más vendidos</h2>
+
+    <aside>
+      <section>
+        <span> Fecha de inicio de consulta: {{ fecha_inicio }} </span>
+        <br />
+        <span> Fecha de fin de consulta: {{ fecha_fin }} </span>
+      </section>
+    </aside>
+
+    <table>
+      <thead>
+        <th>Nombre del modelo</th>
+        <th>Cant. de modelos vendidos</th>
+      </thead>
+      <tbody>
+        {% for modelo in resultados %}
+        <tr>
+          <td>{{modelo.nombre_modelo}}</td>
+          <td>{{modelo.cantidad_vendidos}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -11,7 +11,7 @@ router = routers.DefaultRouter()
 router.register(r'login', loginViewSet, basename=r'login')
 router.register(r'register', registerViewSet, basename=r'register')
 router.register(r'actualizar_contrasena', actualizarContrasenaViewSet, basename=r'actualizar_contrasena')
-router.register(r'reporte_factura', FacturaVentaReport, basename=r'reporte_factura')
+router.register(r'modelos_vendidos', ModeloAutoVendidosReport, basename=r'modelos_vendidos')
 
 # Inventario
 router.register(r'usuario', UsuarioViewSet)

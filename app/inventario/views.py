@@ -1,7 +1,6 @@
 from django.db.models import Count, F
 from django.views import View
 from rest_framework import viewsets, filters, views
-from sarcapi.shared.report_utils import generar_reporte
 from .models import *
 from .serializers import *
 
@@ -169,14 +168,36 @@ class ModeloAutoVendidosReport(viewsets.ViewSet):
         numero_resultados = request.data.get('numero_resultados')
         fecha_inicio = request.data.get('fecha_inicio')
         fecha_fin = request.data.get('fecha_fin')
-        print(request.data)
+
         resultados = FacturaVenta.objects.filter(fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin).annotate(nombre_modelo=F(
             'auto__modelo_auto__nombre_modelo')).values('nombre_modelo').annotate(cantidad_vendidos=Count('nombre_modelo')).order_by('-cantidad_vendidos')[:int(numero_resultados)]
 
         data = {
-            'numero_resultados' : numero_resultados,
+            'numero_resultados': numero_resultados,
             'fecha_inicio': fecha_inicio,
             'fecha_fin': fecha_fin,
             'resultados': resultados
         }
         return generar_reporte('modelo_autos_vendidos', data)
+
+
+class MejoresVendedoresReport(viewsets.ViewSet):
+
+    def create(self, request, *args, **kwargs):
+        numero_resultados = request.data.get('numero_resultados')
+        fecha_inicio = request.data.get('fecha_inicio')
+        fecha_fin = request.data.get('fecha_fin')
+
+        resultados = FacturaVenta.objects.filter(fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin).annotate(nombre_vendedor=F(
+            'vendedor__nombre')).annotate(ventas_totales=Count('id')).values('ventas_totales', 'nombre_vendedor').annotate(cantidad_ventas=Count('nombre_vendedor')).order_by('-cantidad_ventas')[:int(numero_resultados)]
+
+        for resultado in resultados:
+            resultado['ventas_totales'] = (float(
+                resultado['cantidad_ventas'])/float(resultado['ventas_totales'])) * 100
+        data = {
+            'numero_resultados': numero_resultados,
+            'fecha_inicio': fecha_inicio,
+            'fecha_fin': fecha_fin,
+            'resultados': resultados
+        }
+        return generar_reporte('mejores_vendedores', data)

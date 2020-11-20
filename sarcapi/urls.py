@@ -12,6 +12,7 @@ router.register(r'login', loginViewSet, basename=r'login')
 router.register(r'register', registerViewSet, basename=r'register')
 router.register(r'actualizar_contrasena', actualizarContrasenaViewSet, basename=r'actualizar_contrasena')
 router.register(r'modelos_vendidos', ModeloAutoVendidosReport, basename=r'modelos_vendidos')
+router.register(r'mejores_vendedores', MejoresVendedoresReport, basename=r'mejores_vendedores')
 
 # Inventario
 router.register(r'usuario', UsuarioViewSet)

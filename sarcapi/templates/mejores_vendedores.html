@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Reporte de ventas de autos</title>
+    <title>Reporte mejores vendedores</title>
   </head>
 
   <body>
-    <h1>Reporte de ventas de autos</h1>
-    <h2>Top {{ numero_resultados }} modelos más vendidos</h2>
+    <h1>Reporte mejores vendedores</h1>
+    <h2>Top {{ numero_resultados }} Vendedores</h2>
 
     <aside>
       <section>
@@ -19,15 +19,16 @@
 
     <table>
       <thead>
-        <th>Nombre del modelo</th>
+        <th>Nombre del vendedor</th>
         <th>Cant. de modelos vendidos</th>
+        <th>Procentaje de ventas</th>
       </thead>
       <tbody>
         {% for modelo in resultados %}
         <tr>
-          <td>{{modelo.nombre_modelo}}</td>
-          <td>{{modelo.cantidad_vendidos}}</td>
-          <td>{{modelo.ventas_totales}}</td>
+          <td>{{modelo.nombre_vendedor}}</td>
+          <td>{{modelo.cantidad_ventas}}</td>
+          <td>{{modelo.ventas_totales|floatformat:2}}%</td>
         </tr>
         {% endfor %}
       </tbody>

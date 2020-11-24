@@ -40,14 +40,14 @@ class RevisionTecnicaDetalleSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class RevisionTecnicaSerializer(serializers.ModelSerializer):
+class RevisionTecnicaSerializer(WritableNestedModelSerializer):
     nombre_mecanico = serializers.CharField(
         source="mecanico.nombre", read_only=True)
     nombre_cliente = serializers.CharField(
         source="cliente.nombre", read_only=True)
     matricula = serializers.CharField(
         source="vehiculo.matricula", read_only=True)
-
+    revision_detalle = RevisionTecnicaDetalleSerializer(many=True)
     class Meta:
         model = RevisionTecnica
         fields = "__all__"

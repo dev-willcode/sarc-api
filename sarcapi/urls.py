@@ -11,6 +11,8 @@ router = routers.DefaultRouter()
 router.register(r'login', loginViewSet, basename=r'login')
 router.register(r'register', registerViewSet, basename=r'register')
 router.register(r'actualizar_contrasena', actualizarContrasenaViewSet, basename=r'actualizar_contrasena')
+
+# Reportes
 router.register(r'modelos_vendidos', ModeloAutoVendidosReport, basename=r'modelos_vendidos')
 router.register(r'mejores_vendedores', MejoresVendedoresReport, basename=r'mejores_vendedores')
 
@@ -22,6 +24,7 @@ router.register(r'servicio', ServicioViewSet)
 router.register(r'marca', MarcaViewSet)
 router.register(r'equipamiento', EquipamientoViewSet)
 router.register(r'modelo_auto', ModeloAutoViewSet)
+router.register(r'modelo_auto_imagen', ModeloAutoImagenViewSet)
 router.register(r'auto', AutoViewSet)
 router.register(r'factura_venta', FacturaVentaViewSet)
 
@@ -42,3 +45,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

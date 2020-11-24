@@ -37,12 +37,21 @@ class EquipamientoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipamiento
         fields = "__all__"
+        
+
+class ModeloAutoImagenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModeloAutoImagen
+        fields = "__all__"
+
+        
 
 
-class ModeloAutoSerializer(serializers.ModelSerializer):
+class ModeloAutoSerializer(WritableNestedModelSerializer):
     equipamientos_auto = serializers.SerializerMethodField(
         'get_equipamientos_auto', read_only=True)
-
+    modelo_imagenes = ModeloAutoImagenSerializer(many=True, read_only=True)
+    
     class Meta:
         model = ModeloAuto
         fields = "__all__"
@@ -55,6 +64,7 @@ class ModeloAutoSerializer(serializers.ModelSerializer):
 
 class ModeloAutoSerializerList(serializers.ModelSerializer):
     equipamientos = EquipamientoSerializer(many=True, read_only=True)
+    modelo_imagenes = ModeloAutoImagenSerializer(many=True)
 
     class Meta:
         model = ModeloAuto

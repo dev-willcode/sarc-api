@@ -61,9 +61,18 @@ class ModeloAuto(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     descuento = models.DecimalField(max_digits=10, decimal_places=2)
     equipamientos = models.ManyToManyField(Equipamiento, blank=True)
+    transmision = models.CharField(max_length=50, blank=False, null=False)
+    tipos_freno = models.CharField(max_length=50, blank=False, null=False)
+    observaciones = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.nombre_modelo
+
+
+class ModeloAutoImagen(models.Model):
+    modelo_auto = models.ForeignKey(
+        ModeloAuto, related_name='modelo_imagenes', on_delete=models.CASCADE, null=False, blank=False,)
+    imagen = models.ImageField(upload_to='modelo_auto', null=True, blank=True)
 
 
 class Auto(models.Model):

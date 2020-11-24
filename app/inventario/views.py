@@ -147,6 +147,19 @@ class ModeloAutoViewSet(viewsets.ModelViewSet):
     filter_fields = crear_filtros(['id', "nombre_modelo"])
 
 
+class ModeloAutoImagenViewSet(viewsets.ModelViewSet):
+    queryset = ModeloAutoImagen.objects.all()
+    serializer_class = ModeloAutoImagenSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = ModeloAutoImagenSerializer(data=request.data)
+        ModeloAutoImagen.objects.filter(modelo_auto=request.data['modelo_auto']).delete()
+        serializer.is_valid(raise_exception=True)
+        print(ModeloAutoImagen.objects.filter(modelo_auto=request.data['modelo_auto']))
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 class AutoViewSet(viewsets.ModelViewSet):
     queryset = Auto.objects.all()
     serializer_class = AutoSerializer

@@ -152,11 +152,22 @@ class ModeloAutoImagenViewSet(viewsets.ModelViewSet):
     serializer_class = ModeloAutoImagenSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = ModeloAutoImagenSerializer(data=request.data)
-        ModeloAutoImagen.objects.filter(modelo_auto=request.data['modelo_auto']).delete()
-        serializer.is_valid(raise_exception=True)
-        print(ModeloAutoImagen.objects.filter(modelo_auto=request.data['modelo_auto']))
-        serializer.save()
+        modelo_auto = request.data['modelo_auto']
+        eliminar_imagenes = request.data['eliminar_imagenes']
+        if eliminar_imagenes:
+            eliminar = eliminar_imagenes[:-1].split(',')
+            for idImagen in eliminar:
+                imagen = ModeloAutoImagen.objects.get(pk=int(idImagen))
+                imagen.delete()
+
+        for imagen in request.FILES:
+            data = {
+                'modelo_auto': modelo_auto,
+                'imagen': request.FILES[imagen]
+            }
+            serializer = ModeloAutoImagenSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
         return Response(status=status.HTTP_200_OK)
 
 

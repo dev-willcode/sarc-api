@@ -1,3 +1,4 @@
+import app.inventario.models
 from rest_framework import serializers
 from .models import *
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -44,8 +45,6 @@ class ModeloAutoImagenSerializer(serializers.ModelSerializer):
         model = ModeloAutoImagen
         fields = "__all__"
 
-        
-
 
 class ModeloAutoSerializer(WritableNestedModelSerializer):
     equipamientos_auto = serializers.SerializerMethodField(
@@ -55,20 +54,10 @@ class ModeloAutoSerializer(WritableNestedModelSerializer):
     class Meta:
         model = ModeloAuto
         fields = "__all__"
-
+    
     def get_equipamientos_auto(self, obj):
-        modelo = ModeloAuto.objects.get(pk=obj.pk)
-        serializer = ModeloAutoSerializerList(modelo)
-        return serializer.data['equipamientos']
-
-
-class ModeloAutoSerializerList(serializers.ModelSerializer):
-    equipamientos = EquipamientoSerializer(many=True, read_only=True)
-    modelo_imagenes = ModeloAutoImagenSerializer(many=True)
-
-    class Meta:
-        model = ModeloAuto
-        fields = "__all__"
+        serializer = EquipamientoSerializer(obj.equipamientos, many=True)
+        return serializer.data
 
 
 class AutoSerializer(serializers.ModelSerializer):
@@ -89,8 +78,8 @@ class AutoSerializer(serializers.ModelSerializer):
 
     def get_equipamientos_auto(self, obj):
         modelo = ModeloAuto.objects.get(pk=obj.modelo_auto.pk)
-        serializer = ModeloAutoSerializerList(modelo)
-        return serializer.data['equipamientos']
+        serializer = ModeloAutoSerializer(modelo)
+        return serializer.data['equipamientos_auto']
 
 
 class FacturaVentaDetalleSerializer(serializers.ModelSerializer):

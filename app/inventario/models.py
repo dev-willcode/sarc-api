@@ -38,7 +38,8 @@ class Servicio(models.Model):
 
 
 class Marca(models.Model):
-    descripcion = models.CharField(max_length=50, blank=False, null=False)
+    descripcion = models.CharField(
+        unique=True, max_length=50, blank=False, null=False)
 
     def __str__(self):
         return self.descripcion

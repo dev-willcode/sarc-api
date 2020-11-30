@@ -10,7 +10,7 @@ class Usuario(models.Model):
 
 
 class Cliente(models.Model):
-    dni = models.CharField(max_length=13, blank=False, null=False)
+    dni = models.CharField(unique=True, max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
@@ -19,7 +19,7 @@ class Cliente(models.Model):
 
 
 class Vendedor(models.Model):
-    dni = models.CharField(max_length=13, blank=False, null=False)
+    dni = models.CharField(unique=True, max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)

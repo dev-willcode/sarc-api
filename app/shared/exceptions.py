@@ -14,6 +14,7 @@ def custom_exception_handler(exc, context):
         if response is None:
             exc_list = str(exc).split("DETAIL: ")[1].split('CONTEXT: ')
             return Response({'error': [exc_list[0]]}, status=status.HTTP_400_BAD_REQUEST)
-
+        
+        return response
     except:
         return response

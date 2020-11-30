@@ -27,7 +27,7 @@ class MecanicoViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.OrderingFilter, filters.SearchFilter, filter_advanced.RestFrameworkFilterBackend,
                        filter_advanced.ComplexFilterBackend)
     search_fields = []
-    filter_fields = crear_filtros(["id", "citas_pendientes"])
+    filter_fields = crear_filtros(["id", "citas_pendientes", 'taller'])
 
 
 class CitasViewSet(viewsets.ModelViewSet):
@@ -61,20 +61,20 @@ class CitasViewSet(viewsets.ModelViewSet):
             mecanico.save()
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def update(self, request, *args, **kwargs):
         cita_actual = Citas.objects.get(pk=request.data['id'])
         serializer = CitasSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        if (request.data['estado'] != cita_actual.estado): 
+        if (request.data['estado'] != cita_actual.estado):
             mecanico = Mecanico.objects.get(pk=request.data['mecanico'])
             if request.data['estado']:
                 mecanico.citas_pendientes += 1
-            else: 
+            else:
                 mecanico.citas_pendientes -= 1
             mecanico.save()
-        
+
         serializer.update(cita_actual, serializer.validated_data)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -86,6 +86,7 @@ class CitasViewSet(viewsets.ModelViewSet):
         cita.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class RepuestosViewSet(viewsets.ModelViewSet):
     queryset = Repuestos.objects.all()
     serializer_class = RepuestosSerializer
@@ -94,7 +95,6 @@ class RepuestosViewSet(viewsets.ModelViewSet):
                        filter_advanced.ComplexFilterBackend)
     search_fields = []
     filter_fields = crear_filtros(["id", "cantidad"])
-
 
 
 class RevisionTecnicaViewSet(viewsets.ModelViewSet):

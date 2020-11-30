@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
+
 class VehiculoSerializer(serializers.ModelSerializer):
     nombre_cliente = serializers.CharField(
         source="cliente.nombre", read_only=True)
@@ -22,6 +23,10 @@ class CitasSerializer(serializers.ModelSerializer):
         source="cliente.nombre", read_only=True)
     nombre_mecanico = serializers.CharField(
         source="mecanico.nombre", read_only=True)
+    nombre_taller = serializers.CharField(
+        source="taller.nombre", read_only=True)
+    direccion_taller = serializers.CharField(
+        source="taller.domicilio", read_only=True)
 
     class Meta:
         model = Citas
@@ -48,6 +53,7 @@ class RevisionTecnicaSerializer(WritableNestedModelSerializer):
     matricula = serializers.CharField(
         source="vehiculo.matricula", read_only=True)
     revision_detalle = RevisionTecnicaDetalleSerializer(many=True)
+
     class Meta:
         model = RevisionTecnica
         fields = "__all__"
@@ -61,7 +67,7 @@ class FacturaServicioDetalleSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         respuesto = validated_data.get('repuesto', None)
         cantidad = validated_data.get('cantidad')
-        
+
         if respuesto is not None:
             repuesto = Repuestos.objects.get(pk=respuesto.id)
             repuesto.cantidad -= cantidad

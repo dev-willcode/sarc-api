@@ -13,7 +13,7 @@ class Vehiculo(models.Model):
 
 
 class Mecanico(models.Model):
-    dni = models.CharField(max_length=13, blank=False, null=False)
+    dni = models.CharField(unique=True, max_length=13, blank=False, null=False)
     nombre = models.CharField(max_length=50, blank=False, null=False)
     domicilio = models.CharField(max_length=50, blank=False, null=False)
     correo = models.CharField(blank=False, null=False, max_length=255)
@@ -29,13 +29,22 @@ class Citas(models.Model):
         Cliente, on_delete=models.PROTECT, null=False, blank=False)
     mecanico = models.ForeignKey(
         Mecanico, on_delete=models.PROTECT, null=True, blank=True)
+    taller = models.ForeignKey(
+        Servicio, on_delete=models.PROTECT, null=False, blank=False)
     fecha = models.DateField(blank=False, null=False)
     hora = models.CharField(max_length=50, null=False, blank=False)
     estado = models.BooleanField(default=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['fecha', 'hora', 'cliente', 'taller'],
+                                    name='unique_citas', condition=models.Q(estado=True))
+        ]
+
 
 class Repuestos(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, null=False)
+    nombre = models.CharField(
+        unique=True, max_length=50, blank=False, null=False)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     cantidad = models.IntegerField()
 

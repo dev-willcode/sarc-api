@@ -1,4 +1,4 @@
-from django.db.models import Count, F
+from django.db.models import Count, Sum, F
 from django.views import View
 from rest_framework import viewsets, filters, views
 from .models import *
@@ -193,8 +193,25 @@ class ModeloAutoVendidosReport(viewsets.ViewSet):
         fecha_inicio = request.data.get('fecha_inicio')
         fecha_fin = request.data.get('fecha_fin')
 
-        resultados = FacturaVenta.objects.filter(fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin).annotate(nombre_modelo=F(
-            'auto__modelo_auto__nombre_modelo')).values('nombre_modelo').annotate(cantidad_vendidos=Count('nombre_modelo')).order_by('-cantidad_vendidos')[:int(numero_resultados)]
+        resultados = FacturaVenta.objects.filter(
+            fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin
+            ).annotate(
+                nombre_modelo=F('auto__modelo_auto__nombre_modelo')
+            ).values(
+                'nombre_modelo'
+            ).annotate(
+                cantidad_vendidos=Count('nombre_modelo')
+            ).order_by(
+                '-cantidad_vendidos'
+            )[:int(numero_resultados)]
+        
+        ventas_totales = 0.0
+        for resultado in resultados:
+            ventas_totales += float(resultado['cantidad_vendidos'])
+        
+        for resultado in resultados:
+            cantidad_vendidos = float(resultado['cantidad_vendidos'])
+            resultado['ventas_totales'] = (cantidad_vendidos/ventas_totales) * 100
 
         data = {
             'numero_resultados': numero_resultados,
@@ -212,12 +229,26 @@ class MejoresVendedoresReport(viewsets.ViewSet):
         fecha_inicio = request.data.get('fecha_inicio')
         fecha_fin = request.data.get('fecha_fin')
 
-        resultados = FacturaVenta.objects.filter(fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin).annotate(nombre_vendedor=F(
-            'vendedor__nombre')).annotate(ventas_totales=Count('id')).values('ventas_totales', 'nombre_vendedor').annotate(cantidad_ventas=Count('nombre_vendedor')).order_by('-cantidad_ventas')[:int(numero_resultados)]
-
+        resultados = FacturaVenta.objects.filter(
+            fecha_emision__gte=fecha_inicio, fecha_emision__lte=fecha_fin
+        ).annotate(
+            nombre_vendedor=F('vendedor__nombre')
+        ).values(
+            'nombre_vendedor'
+        ).annotate(
+            cantidad_ventas=Count('nombre_vendedor')
+        ).order_by(
+            '-cantidad_ventas'
+        )[:int(numero_resultados)]
+        
+        ventas_totales = 0.0
         for resultado in resultados:
-            resultado['ventas_totales'] = (float(
-                resultado['cantidad_ventas'])/float(resultado['ventas_totales'])) * 100
+            ventas_totales += float(resultado['cantidad_ventas'])
+        
+        for resultado in resultados:
+            cantidad_ventas = float(resultado['cantidad_ventas'])
+            resultado['ventas_totales'] = (cantidad_ventas/ventas_totales) * 100
+
         data = {
             'numero_resultados': numero_resultados,
             'fecha_inicio': fecha_inicio,

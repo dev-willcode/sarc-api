@@ -21,13 +21,14 @@
       <thead>
         <th>Nombre del modelo</th>
         <th>Cant. de modelos vendidos</th>
+        <th>Procentaje de modelos vendidos</th>
       </thead>
       <tbody>
         {% for modelo in resultados %}
         <tr>
           <td>{{modelo.nombre_modelo}}</td>
           <td>{{modelo.cantidad_vendidos}}</td>
-          <td>{{modelo.ventas_totales}}</td>
+          <td>{{modelo.ventas_totales|floatformat:2}}%</td>
         </tr>
         {% endfor %}
       </tbody>

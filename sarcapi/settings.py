@@ -97,28 +97,16 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 # Local development
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'sarcdb',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin',
-#         'HOST': 'localhost',
-#         'PORT': ''
-#     }
-# }
-# Production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dclhkto1e1ub80',
-        'USER': 'wxzdavkqkgrhpj',
-        'PASSWORD': 'f225fb8274512632da0a52b464d1b9202cb53b7bea52f47175e3982524f961d4',
-        'HOST': 'ec2-52-44-139-108.compute-1.amazonaws.com',
-        'PORT': '5432'
+        'NAME': 'sarcdb',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': ''
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
